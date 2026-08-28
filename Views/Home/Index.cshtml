@@ -2,7 +2,101 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="bg-[#f9f8f6] text-[#1b3a2b] font-sans min-h-screen">
+    <!-- Hero Section -->
+    <header class="max-w-7xl mx-auto px-6 py-12 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <img src="~/images/GiftofTheGivers_logo.png" alt="Gift of the Givers" class="h-10 w-10 object-contain">
+            <span class="font-serif text-xl font-bold tracking-tight">Gift of the Givers</span>
+        </div>
+        <nav class="hidden md:flex gap-8 text-sm font-medium">
+            <a href="#about" class="hover:opacity-70 transition">About</a>
+            <a href="#donate" class="hover:opacity-70 transition">Donate</a>
+            <a href="#volunteer" class="hover:opacity-70 transition">Volunteer</a>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h1 class="font-serif text-5xl md:text-6xl tracking-tight mb-6">Provide relief. Restore hope.</h1>
+            <p class="text-gray-600 text-lg leading-relaxed">Disaster response, hunger alleviation, and human development delivered with dignity and immediate impact across communities.</p>
+        </div>
+
+        <!-- Volunteer Section Form -->
+        <section id="volunteer" class="bg-[#eef2ed] rounded-[2.5rem] p-8 md:p-16 mb-16">
+            <div class="max-w-xl mx-auto">
+                <h2 class="font-serif text-3xl mb-4 text-center">Become a Volunteer</h2>
+                <p class="text-gray-600 text-center mb-8 text-sm">Join our network of skilled responders ready to act when disaster strikes.</p>
+
+                <form asp-controller="Volunteers" asp-action="Register" method="post" class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider mb-1">First Name</label>
+                            <input type="text" name="FirstName" required class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1b3a2b]">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider mb-1">Last Name</label>
+                            <input type="text" name="LastName" required class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1b3a2b]">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider mb-1">Email Address</label>
+                        <input type="email" name="EmailAddress" required class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1b3a2b]">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider mb-1">Phone Number</label>
+                        <input type="text" name="PhoneNumber" class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1b3a2b]">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider mb-1">Specialized Skills</label>
+                        <input type="text" name="SpecializedSkills" placeholder="e.g. Medical, Logistics, Engineering" class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1b3a2b]">
+                    </div>
+                    <button type="submit" class="w-full bg-[#1b3a2b] text-white py-4 rounded-xl font-medium hover:bg-opacity-90 transition mt-4">Register as Volunteer</button>
+                </form>
+            </div>
+        </section>
+        <!-- Donation & Impact Tracker Section -->
+        <section id="donate" class="bg-[#1b3a2b] text-[#f9f8f6] rounded-[2.5rem] p-8 md:p-16 mb-16">
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="font-serif text-4xl mb-4">Real-Time Impact Tracker</h2>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">Every contribution goes directly toward critical disaster relief operations, medical supply procurement, and emergency food security distribution.</p>
+
+                    <div class="grid grid-cols-2 gap-6 border-t border-white/20 pt-6">
+                        <div>
+                            <span class="block font-serif text-3xl font-bold">R1.2M+</span>
+                            <span class="text-xs uppercase tracking-wider text-gray-300">Relief Funds Raised</span>
+                        </div>
+                        <div>
+                            <span class="block font-serif text-3xl font-bold">4,500+</span>
+                            <span class="text-xs uppercase tracking-wider text-gray-300">Volunteers Active</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-[#f9f8f6] text-[#1b3a2b] p-8 rounded-3xl">
+                    <h3 class="font-serif text-2xl mb-4">Log a Contribution</h3>
+                    <form asp-controller="Donations" asp-action="Create" method="post" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider mb-1">Donor Name / Organization</label>
+                            <input type="text" name="DonorName" required class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1b3a2b]">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider mb-1">Contribution Amount (ZAR)</label>
+                            <input type="number" step="0.01" name="Amount" required class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1b3a2b]">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider mb-1">Donation Type</label>
+                            <select name="DonationType" class="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1b3a2b]">
+                                <option value="Financial">Financial Support</option>
+                                <option value="Medical">Medical Supplies</option>
+                                <option value="Food">Food Parcels</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full bg-[#1b3a2b] text-white py-4 rounded-xl font-medium hover:bg-opacity-90 transition mt-2">Submit Contribution</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
 </div>

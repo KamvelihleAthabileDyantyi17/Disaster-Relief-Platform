@@ -8,5 +8,6 @@ namespace DisasterRelief.Data
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
 		public DbSet<Volunteer> Volunteers { get; set; }
+		public DbSet<Donation> Donations { get; set; }
 	}
 }
