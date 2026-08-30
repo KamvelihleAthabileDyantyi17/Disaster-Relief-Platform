@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "Operations Dashboard";
+}
+
+<div class="max-w-7xl mx-auto p-6 mt-10">
+    <h1 class="text-4xl font-serif font-bold text-[#1b3a2b] mb-6">Operations Dashboard</h1>
+
+    @if (User.IsInRole("Employee"))
+    {
+    <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 mb-6">
+        <h2 class="text-2xl font-serif mb-4">Employee Controls</h2>
+        <p class="text-gray-600 mb-6">Post real-time updates to the public feed and manage logistics.</p>
+
+        <form asp-controller="Dashboard" asp-action="PostUpdate" method="post" class="flex gap-4">
+            <input type="text" name="message" placeholder="Type an urgent update..." class="flex-1 bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1b3a2b]" required />
+            <button type="submit" class="bg-[#1b3a2b] text-white px-8 py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Post Update</button>
+        </form>
+    </div>
+    }
+    else
+    {
+    <div class="bg-[#f9f8f6] p-8 rounded-2xl border border-gray-200 text-[#1b3a2b]">
+        <h2 class="text-2xl font-serif mb-4">Donor Portal</h2>
+        <p class="text-sm leading-relaxed mb-4">Thank you for your continued support. View your contribution history and current active disaster relief campaigns here.</p>
+        <a href="/#donate" class="inline-block bg-[#1b3a2b] text-white px-6 py-3 rounded-xl font-medium mt-2">Log New Contribution</a>
+    </div>
+    }
+</div>
