@@ -12,8 +12,8 @@ namespace DisasterRelief.Controllers
 		{
 			_context = context;
 		}
-
-		[HttpPost]
+        // Feature: Volunteer registration module initialized
+        [HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Register(Volunteer volunteer)
 		{
