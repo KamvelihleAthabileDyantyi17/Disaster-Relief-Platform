@@ -17,11 +17,20 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-6 py-12">
-        <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="text-center max-w-3xl mx-auto mb-12">
             <h1 class="font-serif text-5xl md:text-6xl tracking-tight mb-6">Provide relief. Restore hope.</h1>
             <p class="text-gray-600 text-lg leading-relaxed">Disaster response, hunger alleviation, and human development delivered with dignity and immediate impact across communities.</p>
         </div>
 
+        <!-- ========================================== -->
+        <!-- PROOF OF NUGET PACKAGE (TAX SIMULATOR)     -->
+        <!-- ========================================== -->
+        <div class="max-w-3xl mx-auto mb-16 bg-[#1b3a2b] text-[#f9f8f6] rounded-2xl p-6 text-center shadow-lg border border-[#eef2ed]">
+            <h3 class="font-serif text-2xl mb-2">Tax Deduction Simulator</h3>
+            <p class="text-gray-300 text-sm mb-4">Based on a simulated total donation pool of R50,000:</p>
+            <h4 class="text-xl">Calculated 18% Tax Deduction: <strong class="text-white bg-white/20 px-3 py-1 rounded-lg">R @ViewBag.TaxDeductibleValue</strong></h4>
+        </div>
+        <!-- ========================================== -->
         <!-- Volunteer Section Form -->
         <section id="volunteer" class="bg-[#eef2ed] rounded-[2.5rem] p-8 md:p-16 mb-16">
             <div class="max-w-xl mx-auto">
@@ -55,6 +64,7 @@
                 </form>
             </div>
         </section>
+
         <!-- Donation & Impact Tracker Section -->
         <section id="donate" class="bg-[#1b3a2b] text-[#f9f8f6] rounded-[2.5rem] p-8 md:p-16 mb-16">
             <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
