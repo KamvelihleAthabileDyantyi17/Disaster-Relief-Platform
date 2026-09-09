@@ -1,53 +1,84 @@
-@{
+@model IEnumerable<DisasterRelief.Models.Donation>
+    @{
     ViewData["Title"] = "Dashboard";
-}
+    }
 
-<div class="max-w-4xl mx-auto p-6 mt-10">
-    <!-- Main Card Container with Shadow -->
-    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+    <div class="max-w-5xl mx-auto p-6 mt-10">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
 
-        <!-- Header Section -->
-        <div class="bg-[#1b3a2b] text-white p-8">
-            <h1 class="text-3xl font-serif font-bold tracking-wide">Operations Center</h1>
-            <p class="mt-2 text-green-100 opacity-90 text-sm">
-                Welcome back, <span class="font-semibold">@User.Identity.Name</span>. Here is your platform overview.
-            </p>
-        </div>
-
-        <!-- Dynamic Content Section -->
-        <div class="p-8">
-            @if (User.IsInRole("Employee"))
-            {
-                <!-- Employee View -->
-            <div class="bg-green-50 p-6 rounded-xl border border-green-200 shadow-sm">
-                <h2 class="text-xl font-bold text-[#1b3a2b] mb-2">Employee Control Panel</h2>
-                <p class="text-gray-600 mb-5 text-sm">Broadcast critical updates to the public feed securely.</p>
-
-                <form asp-controller="Dashboard" asp-action="PostUpdate" method="post" class="flex flex-col sm:flex-row gap-4">
-                    <input type="text" name="message" placeholder="Enter urgent dispatch..."
-                           class="flex-1 bg-white border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#1b3a2b] shadow-inner" required />
-                    <button type="submit"
-                            class="bg-[#1b3a2b] text-white px-8 py-2.5 rounded-lg font-medium shadow-md hover:bg-opacity-90 transition-all">
-                        Broadcast
-                    </button>
-                </form>
+            <!-- Header Section -->
+            <div class="bg-[#1b3a2b] text-white p-8">
+                <h1 class="text-3xl font-serif font-bold tracking-wide">Operations Center</h1>
+                <p class="mt-2 text-green-100 opacity-90 text-sm">
+                    Status: @(User.IsInRole("Employee") ? "Employee Administrator" : "Verified Donor") | User: <span class="font-semibold">@User.Identity.Name</span>
+                </p>
             </div>
+
+            <div class="p-8">
+                @if (User.IsInRole("Employee"))
+            {
+                <!-- EMPLOYEE VIEW: Financials & Data -->
+                <div class="space-y-8">
+
+                    <!-- Total Donations Stats Card -->
+                    <div class="bg-green-50 p-6 rounded-xl border border-green-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <h2 class="text-xl font-bold text-[#1b3a2b]">Total Platform Contributions</h2>
+                            <p class="text-sm text-gray-600">Cumulative sum of all verified donations.</p>
+                        </div>
+                        <div class="text-4xl font-bold text-[#1b3a2b]">
+                            R @ViewBag.TotalSum
+                        </div>
+                    </div>
+
+                    <!-- Donor History Table -->
+                    <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                        <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                            <h3 class="font-bold text-[#1b3a2b]">Recent Donor Activity</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-gray-100 text-gray-600">
+                                    <tr>
+                                        <th class="px-6 py-3 font-semibold">Donor Name</th>
+                                        <th class="px-6 py-3 font-semibold">Donation Type</th>
+                                        <th class="px-6 py-3 font-semibold text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    @foreach (var donation in Model)
+                                    {
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="px-6 py-4 font-medium text-gray-900">@donation.DonorName</td>
+                                        <td class="px-6 py-4 text-gray-600">@donation.DonationType</td>
+                                        <td class="px-6 py-4 font-bold text-green-700 text-right">R @donation.Amount</td>
+                                    </tr>
+                                    }
+                                    @if(!Model.Any())
+                                    {
+                                    <tr>
+                                        <td colspan="3" class="px-6 py-8 text-center text-gray-500 italic">No donations recorded yet.</td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             }
             else
             {
- <!-- Donor View -->
-            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
-                <div>
-                    <h2 class="text-xl font-bold text-[#1b3a2b] mb-2">Donor Portal</h2>
-                    <p class="text-gray-600 text-sm">Thank you for standing with us. Track your impact and active campaigns.</p>
+ <!-- STANDARD DONOR VIEW -->
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-[#1b3a2b] mb-2">Donor Portal</h2>
+                        <p class="text-gray-600 text-sm">Thank you for standing with us. View active campaigns below.</p>
+                    </div>
+                    <a href="/#donate" class="bg-[#1b3a2b] text-white px-6 py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all">
+                        Make a Contribution
+                    </a>
                 </div>
-                <a href="/#donate"
-                   class="whitespace-nowrap bg-[#1b3a2b] text-white px-6 py-3 rounded-lg font-medium shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">
-                    Make a Contribution
-                </a>
-            </div>
             }
+            </div>
         </div>
-
     </div>
-</div>
