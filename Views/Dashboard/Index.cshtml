@@ -1,28 +1,53 @@
 @{
-    ViewData["Title"] = "Operations Dashboard";
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="max-w-7xl mx-auto p-6 mt-10">
-    <h1 class="text-4xl font-serif font-bold text-[#1b3a2b] mb-6">Operations Dashboard</h1>
+<div class="max-w-4xl mx-auto p-6 mt-10">
+    <!-- Main Card Container with Shadow -->
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
 
-    @if (User.IsInRole("Employee"))
-    {
-    <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 mb-6">
-        <h2 class="text-2xl font-serif mb-4">Employee Controls</h2>
-        <p class="text-gray-600 mb-6">Post real-time updates to the public feed and manage logistics.</p>
+        <!-- Header Section -->
+        <div class="bg-[#1b3a2b] text-white p-8">
+            <h1 class="text-3xl font-serif font-bold tracking-wide">Operations Center</h1>
+            <p class="mt-2 text-green-100 opacity-90 text-sm">
+                Welcome back, <span class="font-semibold">@User.Identity.Name</span>. Here is your platform overview.
+            </p>
+        </div>
 
-        <form asp-controller="Dashboard" asp-action="PostUpdate" method="post" class="flex gap-4">
-            <input type="text" name="message" placeholder="Type an urgent update..." class="flex-1 bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1b3a2b]" required />
-            <button type="submit" class="bg-[#1b3a2b] text-white px-8 py-3 rounded-xl font-medium hover:bg-opacity-90 transition">Post Update</button>
-        </form>
+        <!-- Dynamic Content Section -->
+        <div class="p-8">
+            @if (User.IsInRole("Employee"))
+            {
+                <!-- Employee View -->
+            <div class="bg-green-50 p-6 rounded-xl border border-green-200 shadow-sm">
+                <h2 class="text-xl font-bold text-[#1b3a2b] mb-2">Employee Control Panel</h2>
+                <p class="text-gray-600 mb-5 text-sm">Broadcast critical updates to the public feed securely.</p>
+
+                <form asp-controller="Dashboard" asp-action="PostUpdate" method="post" class="flex flex-col sm:flex-row gap-4">
+                    <input type="text" name="message" placeholder="Enter urgent dispatch..."
+                           class="flex-1 bg-white border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#1b3a2b] shadow-inner" required />
+                    <button type="submit"
+                            class="bg-[#1b3a2b] text-white px-8 py-2.5 rounded-lg font-medium shadow-md hover:bg-opacity-90 transition-all">
+                        Broadcast
+                    </button>
+                </form>
+            </div>
+            }
+            else
+            {
+ <!-- Donor View -->
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-[#1b3a2b] mb-2">Donor Portal</h2>
+                    <p class="text-gray-600 text-sm">Thank you for standing with us. Track your impact and active campaigns.</p>
+                </div>
+                <a href="/#donate"
+                   class="whitespace-nowrap bg-[#1b3a2b] text-white px-6 py-3 rounded-lg font-medium shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                    Make a Contribution
+                </a>
+            </div>
+            }
+        </div>
+
     </div>
-    }
-    else
-    {
-    <div class="bg-[#f9f8f6] p-8 rounded-2xl border border-gray-200 text-[#1b3a2b]">
-        <h2 class="text-2xl font-serif mb-4">Donor Portal</h2>
-        <p class="text-sm leading-relaxed mb-4">Thank you for your continued support. View your contribution history and current active disaster relief campaigns here.</p>
-        <a href="/#donate" class="inline-block bg-[#1b3a2b] text-white px-6 py-3 rounded-xl font-medium mt-2">Log New Contribution</a>
-    </div>
-    }
 </div>
