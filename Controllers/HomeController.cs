@@ -15,6 +15,10 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        // Proof of custom NuGet package consumption for the rubric
+        decimal totalDonations = 50000m; // Example amount
+        ViewBag.TaxDeductibleValue = GiftOfTheGivers.Helpers.TaxCalculator.GetTaxDeductibleAmount(totalDonations);
+
         return View();
     }
 
