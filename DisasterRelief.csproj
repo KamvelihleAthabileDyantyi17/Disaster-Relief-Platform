@@ -21,5 +21,10 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+	<ItemGroup>
+    <Compile Remove="GiftOfTheGivers.Helpers\**" />
+    <Content Remove="GiftOfTheGivers.Helpers\**" />
+    <None Remove="GiftOfTheGivers.Helpers\**" />
+  </ItemGroup>
 
 </Project>
