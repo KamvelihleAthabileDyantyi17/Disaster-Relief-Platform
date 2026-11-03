@@ -50,6 +50,16 @@ public class DonationValidationTests
     }
 
     [Fact]
+    public void Donation_ZeroAmount_IsInvalid()
+    {
+        var donation = new Donation { DonorName = "Anonymous", Amount = 0m, DonationType = "Financial" };
+
+        var errors = Validate(donation);
+
+        Assert.Contains(errors, e => e.MemberNames.Contains(nameof(Donation.Amount)));
+    }
+
+    [Fact]
     public void Volunteer_InvalidEmail_IsInvalid()
     {
         var volunteer = new Volunteer

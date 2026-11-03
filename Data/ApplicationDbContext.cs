@@ -11,5 +11,6 @@ namespace DisasterRelief.Data
 
         public DbSet<Volunteer> Volunteers { get; set; }
         public DbSet<Donation> Donations { get; set; }
+        public DbSet<ReliefUpdate> Updates { get; set; }
     }
 }

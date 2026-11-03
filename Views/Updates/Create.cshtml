@@ -1,0 +1,33 @@
+@model DisasterRelief.Models.ReliefUpdate
+@{
+    ViewData["Title"] = "Post an Update";
+}
+
+<div class="max-w-2xl mx-auto p-6 mt-10">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+        <h1 class="text-3xl font-serif font-bold text-[#1b3a2b] mb-2">Post an Update</h1>
+        <p class="text-gray-600 text-sm mb-6">Your update appears in "Latest Updates" on the home page for everyone to see.</p>
+
+        <form asp-action="Create" method="post" class="space-y-4">
+            <div asp-validation-summary="ModelOnly" class="text-red-600 text-sm"></div>
+            <div>
+                <label asp-for="Title" class="block text-xs font-semibold uppercase tracking-wider mb-1">Title</label>
+                <input asp-for="Title" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm" placeholder="e.g. Flood relief convoy arrives in KZN" />
+                <span asp-validation-for="Title" class="text-red-600 text-xs"></span>
+            </div>
+            <div>
+                <label asp-for="Message" class="block text-xs font-semibold uppercase tracking-wider mb-1">Message</label>
+                <textarea asp-for="Message" rows="6" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm" placeholder="What happened, and how can people help?"></textarea>
+                <span asp-validation-for="Message" class="text-red-600 text-xs"></span>
+            </div>
+            <div class="flex gap-3">
+                <button type="submit" id="publish-update" class="bg-[#1b3a2b] text-white px-6 py-3 rounded-xl font-medium">Publish Update</button>
+                <a asp-controller="Dashboard" asp-action="Index" class="px-6 py-3 rounded-xl border border-gray-300">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

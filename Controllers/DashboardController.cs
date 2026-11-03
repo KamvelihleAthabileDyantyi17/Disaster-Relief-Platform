@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using DisasterRelief.Data;
+using DisasterRelief.Models;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,13 +25,28 @@ namespace DisasterRelief.Controllers
 
         public IActionResult Index()
         {
-            // 1. Fetch all donations from the database
-            var allDonations = _context.Donations.ToList();
+            // 1. Fetch all donations, newest first
+            var allDonations = _context.Donations.ToList()
+                .OrderByDescending(d => d.DateDonated).ToList();
 
-            // 2. Calculate the total sum of all amounts
-            ViewBag.TotalSum = _context.Donations.Sum(d => d.Amount);
+            // Older rows (before currency/frequency existed) count as once-off ZAR
+            foreach (var d in allDonations)
+            {
+                if (string.IsNullOrEmpty(d.Currency)) d.Currency = "ZAR";
+                if (string.IsNullOrEmpty(d.Frequency)) d.Frequency = "Once-off";
+            }
 
-            // 3. Send the data to the view
+            // 2. Totals: rand total plus a total per currency
+            ViewBag.TotalSum = allDonations.Where(d => d.Currency == "ZAR").Sum(d => d.Amount);
+            ViewBag.TotalsByCurrency = allDonations
+                .GroupBy(d => d.Currency)
+                .ToDictionary(g => g.Key, g => g.Sum(d => d.Amount));
+
+            // 3. The logged-in donor's own donations (for tax certificates)
+            var me = User?.Identity?.Name;
+            ViewBag.MyDonations = allDonations.Where(d => me != null && d.DonorEmail == me).ToList();
+
+            // 4. Send the data to the view
             return View(allDonations);
         }
 

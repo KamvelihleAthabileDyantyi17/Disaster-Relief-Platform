@@ -1,0 +1,28 @@
+@model DisasterRelief.Models.Donation
+@{
+    ViewData["Title"] = "Tax Certificate";
+    var currency = string.IsNullOrEmpty(Model.Currency) ? "ZAR" : Model.Currency;
+}
+
+<div class="max-w-2xl mx-auto p-6 mt-10">
+    <div id="certificate" class="bg-white border-4 border-double border-[#1b3a2b] rounded-2xl p-10 text-[#1b3a2b]">
+        <h1 class="font-serif text-3xl text-center font-bold">Gift of the Givers Foundation</h1>
+        <h2 class="font-serif text-xl text-center mb-8">Donation Tax Certificate</h2>
+
+        <table class="w-full text-sm">
+            <tr class="border-b"><td class="py-3 font-semibold w-1/2">Certificate number</td><td>@ViewBag.CertificateNumber</td></tr>
+            <tr class="border-b"><td class="py-3 font-semibold">Donor</td><td>@Model.DonorName</td></tr>
+            <tr class="border-b"><td class="py-3 font-semibold">Date of donation</td><td>@Model.DateDonated.ToString("dd MMMM yyyy")</td></tr>
+            <tr class="border-b"><td class="py-3 font-semibold">Donation type</td><td>@Model.DonationType</td></tr>
+            <tr class="border-b"><td class="py-3 font-semibold">Amount</td><td>@currency @Model.Amount.ToString("0.00")</td></tr>
+            <tr class="border-b"><td class="py-3 font-semibold">Tax-deductible value (18%)</td><td>@currency @(((decimal)ViewBag.Deductible).ToString("0.00"))</td></tr>
+        </table>
+        <p class="text-xs text-gray-500 mt-8">Issued electronically by the Disaster Relief Platform on @DateTime.Now.ToString("dd MMMM yyyy").</p>
+    </div>
+
+    <div class="flex gap-3 justify-center mt-6 print:hidden">
+        <a id="download-certificate" asp-action="Download" asp-route-id="@Model.Id" class="bg-[#1b3a2b] text-white px-6 py-3 rounded-xl font-medium">Download Certificate</a>
+        <button type="button" onclick="window.print()" class="px-6 py-3 rounded-xl border border-gray-300">Print / Save as PDF</button>
+        <a asp-controller="Dashboard" asp-action="Index" class="px-6 py-3 rounded-xl border border-gray-300">Back</a>
+    </div>
+</div>

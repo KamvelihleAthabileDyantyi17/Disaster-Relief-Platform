@@ -42,9 +42,9 @@ public class DonationsIntegrationTests
     {
         using var db = NewDatabase();
         var controller = new DonationsController(db);
-        controller.ModelState.AddModelError("DonorName", "The DonorName field is required.");
+        controller.ModelState.AddModelError("DonationType", "The DonationType field is required.");
 
-        await controller.Create(new Donation { DonorName = "", Amount = 100m, DonationType = "Food" });
+        await controller.Create(new Donation { DonorName = "Sipho", Amount = 100m, DonationType = "" });
 
         Assert.Equal(0, await db.Donations.CountAsync());
     }
@@ -66,6 +66,36 @@ public class DonationsIntegrationTests
         var model = Assert.IsAssignableFrom<IEnumerable<Donation>>(view.Model);
         Assert.Equal(3, model.Count());
         Assert.Equal(2000.50m, (decimal)view.ViewData["TotalSum"]!);
+    }
+
+    [Fact]
+    public async Task DonationFlow_AnonymousRecurringForeignCurrency_SavedCorrectly()
+    {
+        using var db = NewDatabase();
+        var controller = new DonationsController(db);
+        var form = new Donation
+        {
+            DonorName = "Should be hidden", IsAnonymous = true,
+            Amount = 50m, Currency = "USD", Frequency = "Monthly", DonationType = "Financial"
+        };
+
+        await controller.Create(form);
+
+        var saved = await db.Donations.SingleAsync();
+        Assert.Equal("Anonymous", saved.DonorName);
+        Assert.Equal("USD", saved.Currency);
+        Assert.Equal("Monthly", saved.Frequency);
+    }
+
+    [Fact]
+    public async Task DonationFlow_UnsupportedCurrency_IsRejected()
+    {
+        using var db = NewDatabase();
+        var controller = new DonationsController(db);
+
+        await controller.Create(new Donation { DonorName = "Test", Amount = 50m, Currency = "BTC", DonationType = "Financial" });
+
+        Assert.Equal(0, await db.Donations.CountAsync());
     }
 
     [Fact]
