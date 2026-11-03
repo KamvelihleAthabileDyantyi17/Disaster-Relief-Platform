@@ -1,3 +1,4 @@
+# Part 3 - Section B: build and run unit + integration tests on every commit to main
 trigger:
 - main
 
@@ -7,31 +8,35 @@ pool:
 variables:
   buildConfiguration: 'Release'
   testProject: 'DisasterRelief.Tests/DisasterRelief.Tests.csproj'
+  localFeed: '$(Agent.TempDirectory)/localpackages'
 
 steps:
+# 1. Same .NET version as the project
 - task: UseDotNet@2
   displayName: 'Install .NET 9 SDK'
   inputs:
     packageType: 'sdk'
     version: '9.0.x'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Restore'
-  inputs:
-    command: 'restore'
-    projects: '$(testProject)'
+# 2. Our custom NuGet package (GiftOfTheGivers.Helpers) is not on nuget.org,
+#    so build it into a local package folder the restore step can use.
+- script: dotnet pack GiftOfTheGivers.Helpers/GiftOfTheGivers.Helpers.csproj -c $(buildConfiguration) -o "$(localFeed)"
+  displayName: 'Pack custom NuGet package (GiftOfTheGivers.Helpers)'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build'
-  inputs:
-    command: 'build'
-    projects: '$(testProject)'
-    arguments: '--configuration $(buildConfiguration) --no-restore'
+# 3. Restore from nuget.org + the local package folder
+- script: dotnet restore $(testProject) -s "$(localFeed)" -s https://api.nuget.org/v3/index.json
+  displayName: 'Restore dependencies'
 
+# 4. Build the test project (this also builds the web app it references)
+- script: dotnet build $(testProject) -c $(buildConfiguration) --no-restore
+  displayName: 'Build web app and tests'
+
+# 5. Run unit + integration tests. Selenium UI tests (Category=UI) are skipped
+#    because no website is running on the build agent.
 - task: DotNetCoreCLI@2
   displayName: 'Run unit and integration tests'
   inputs:
     command: 'test'
     projects: '$(testProject)'
-    arguments: '--configuration $(buildConfiguration) --no-build --filter "Category!=UI"'
+    arguments: '-c $(buildConfiguration) --no-build --filter "Category!=UI"'
     publishTestResults: true
