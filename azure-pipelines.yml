@@ -6,28 +6,32 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  testProject: 'DisasterRelief.Tests/DisasterRelief.Tests.csproj'
 
 steps:
-# 1. Restore Dependencies
+- task: UseDotNet@2
+  displayName: 'Install .NET 9 SDK'
+  inputs:
+    packageType: 'sdk'
+    version: '9.0.x'
+
 - task: DotNetCoreCLI@2
-  displayName: 'Restore dependencies'
+  displayName: 'Restore'
   inputs:
     command: 'restore'
-    projects: '**/*.csproj'
+    projects: '$(testProject)'
 
-# 2. Build the Visual Studio Solution
 - task: DotNetCoreCLI@2
-  displayName: 'Build the solution'
+  displayName: 'Build'
   inputs:
     command: 'build'
-    projects: '**/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+    projects: '$(testProject)'
+    arguments: '--configuration $(buildConfiguration) --no-restore'
 
-# 3. Run Tests (Selenium UI tests are skipped: no website is running on the build agent)
 - task: DotNetCoreCLI@2
-  displayName: 'Run tests'
+  displayName: 'Run unit and integration tests'
   inputs:
     command: 'test'
-    projects: '**/*Tests.csproj'
-    arguments: '--configuration $(buildConfiguration) --filter "Category!=UI"'
+    projects: '$(testProject)'
+    arguments: '--configuration $(buildConfiguration) --no-build --filter "Category!=UI"'
     publishTestResults: true
