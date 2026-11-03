@@ -25,6 +25,12 @@
     <Compile Remove="GiftOfTheGivers.Helpers\**" />
     <Content Remove="GiftOfTheGivers.Helpers\**" />
     <None Remove="GiftOfTheGivers.Helpers\**" />
+		<Compile Remove="DisasterRelief.Tests\**" />
+		<Content Remove="DisasterRelief.Tests\**" />
+		<None Remove="DisasterRelief.Tests\**" />
   </ItemGroup>
+	<ItemGroup>
+	  <Folder Include="DisasterRelief.Tests\" />
+	</ItemGroup>
 
 </Project>

@@ -23,10 +23,11 @@ steps:
     projects: '**/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
-# 3. Run Tests
+# 3. Run Tests (Selenium UI tests are skipped: no website is running on the build agent)
 - task: DotNetCoreCLI@2
   displayName: 'Run tests'
   inputs:
     command: 'test'
-    projects: '**/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+    projects: '**/*Tests.csproj'
+    arguments: '--configuration $(buildConfiguration) --filter "Category!=UI"'
+    publishTestResults: true
